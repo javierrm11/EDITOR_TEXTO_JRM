@@ -41,6 +41,8 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         tamano.addItem("16");
         tamano.addItem("24");
         tamano.addItem("32");
+        tamano.addItem("64");
+        tamano.addItem("128");
 
         negrita.setBounds(30, 20, 80, 30);
         cursiva.setBounds(130, 20, 80, 30);
