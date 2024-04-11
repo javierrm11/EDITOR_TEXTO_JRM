@@ -17,7 +17,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
 
     private JMenuBar menubar;
     private JMenu menu;
-    private JMenuItem mi1,mi2,mi3;
+    private JMenuItem mi1, mi2, mi3;
 
     public EDITOR_TEXTO_JRM() {
         panel = new JPanel();
@@ -83,7 +83,6 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         scrollPane.setBounds(30, 60, 680, 300);
 
         escribir.setEditable(true);
-
         panel.add(scrollPane);
 
         add(panel);
@@ -94,21 +93,21 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         tamano.addActionListener(new Tamano());
         color.addActionListener(new SeColor());
 
-        menubar=new JMenuBar();
+        menubar = new JMenuBar();
         setJMenuBar(menubar);
 
         menubar.setBackground(Color.darkGray);
         menubar.setBorder(new EmptyBorder(5, 0, 5, 0));
 
-        menu=new JMenu("Archivo");
+        menu = new JMenu("Archivo"); // Inicializa el menu
         menu.setForeground(Color.white);
 
         menubar.add(menu);
-        mi1=new JMenuItem("Guardar");
+        mi1 = new JMenuItem("Guardar"); // Inicializa un elemento del menu
         mi1.addActionListener(new Guardar());
 
         menu.add(mi1);
-        mi2=new JMenuItem("Salir");
+        mi2 = new JMenuItem("Salir");
         mi2.addActionListener(new Salir());
 
         mi1.setBackground(Color.darkGray);
@@ -126,64 +125,49 @@ public class EDITOR_TEXTO_JRM extends JFrame {
 
     private class Bold implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            int start = escribir.getSelectionStart();
-            int end = escribir.getSelectionEnd();
-            StyledDocument doc = escribir.getStyledDocument();
-            Style style = doc.addStyle("Negrita", null);
-            AttributeSet atributos = doc.getCharacterElement(start).getAttributes();
-            boolean esNegrita = StyleConstants.isBold(atributos);
-            StyleConstants.setBold(style, !esNegrita);
-            doc.setCharacterAttributes(start, end - start, style, false);
+            MutableAttributeSet attrs = escribir.getInputAttributes();
+            boolean bold = (StyleConstants.isBold(attrs)) ? false : true;
+            StyleConstants.setBold(attrs, bold);
+            escribir.setCharacterAttributes(attrs, false);
         }
     }
 
     private class Cursiva implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            int start = escribir.getSelectionStart();
-            int end = escribir.getSelectionEnd();
-            StyledDocument doc = escribir.getStyledDocument();
-            Style style = doc.addStyle("Cursiva", null);
-            AttributeSet atributos = doc.getCharacterElement(start).getAttributes();
-            boolean esCursiva = StyleConstants.isItalic(atributos);
-            StyleConstants.setItalic(style, !esCursiva);
-            doc.setCharacterAttributes(start, end - start, style, false);
+            MutableAttributeSet attrs = escribir.getInputAttributes();
+            boolean italic = (StyleConstants.isItalic(attrs)) ? false : true;
+            StyleConstants.setItalic(attrs, italic);
+            escribir.setCharacterAttributes(attrs, false);
         }
     }
 
     private class Subraya implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            int start = escribir.getSelectionStart();
-            int end = escribir.getSelectionEnd();
-            StyledDocument doc = escribir.getStyledDocument();
-            Style style = doc.addStyle("Subrayado", null);
-            AttributeSet atributos = doc.getCharacterElement(start).getAttributes();
-            boolean esSubrayado = StyleConstants.isUnderline(atributos);
-            StyleConstants.setUnderline(style, !esSubrayado);
-            doc.setCharacterAttributes(start, end - start, style, false);
+            MutableAttributeSet attrs = escribir.getInputAttributes();
+            boolean underline = (StyleConstants.isUnderline(attrs)) ? false : true;
+            StyleConstants.setUnderline(attrs, underline);
+            escribir.setCharacterAttributes(attrs, false);
         }
     }
 
     private class CambiarFuente implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            int start = escribir.getSelectionStart();
-            int end = escribir.getSelectionEnd();
-            StyledDocument doc = escribir.getStyledDocument();
             String fontName = (String) combo.getSelectedItem();
-            Style style = doc.addStyle("Fuente", null);
-            StyleConstants.setFontFamily(style, fontName);
-            doc.setCharacterAttributes(start, end - start, style, false);
+            if (fontName != null) {
+                MutableAttributeSet attrs = new SimpleAttributeSet();
+                StyleConstants.setFontFamily(attrs, fontName);
+                escribir.setCharacterAttributes(attrs, false);
+            }
         }
     }
-
     private class Tamano implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            int start = escribir.getSelectionStart();
-            int end = escribir.getSelectionEnd();
-            StyledDocument doc = escribir.getStyledDocument();
             String fontSize = (String) tamano.getSelectedItem();
-            Style style = doc.addStyle("Tamano", null);
-            StyleConstants.setFontSize(style, Integer.parseInt(fontSize));
-            doc.setCharacterAttributes(start, end - start, style, false);
+            if (fontSize != null) {
+                MutableAttributeSet attrs = new SimpleAttributeSet();
+                StyleConstants.setFontSize(attrs, Integer.parseInt(fontSize));
+                escribir.setCharacterAttributes(attrs, false);
+            }
         }
     }
 
@@ -191,12 +175,9 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         public void actionPerformed(ActionEvent e) {
             Color selectedColor = JColorChooser.showDialog(null, "Seleccione un color", Color.BLACK);
             if (selectedColor != null) {
-                int start = escribir.getSelectionStart();
-                int end = escribir.getSelectionEnd();
-                StyledDocument doc = escribir.getStyledDocument();
-                SimpleAttributeSet attrs = new SimpleAttributeSet();
+                MutableAttributeSet attrs = new SimpleAttributeSet();
                 StyleConstants.setForeground(attrs, selectedColor);
-                doc.setCharacterAttributes(start, end - start, attrs, false);
+                escribir.setCharacterAttributes(attrs, false);
             }
         }
     }
@@ -226,11 +207,10 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         }
     }
 
-
     public static void main(String[] args) {
         EDITOR_TEXTO_JRM editor = new EDITOR_TEXTO_JRM();
         editor.setTitle("Design Preview [ Editor de Texto ]");
-        editor.setLocation(100, 0);
+        editor.setLocation(400, 100);
         editor.setSize(750, 600);
         editor.setVisible(true);
         editor.setDefaultCloseOperation(EXIT_ON_CLOSE);
