@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class EDITOR_TEXTO_JRM extends JFrame {
+    // Creación de los componentes
     private JPanel panel;
     private JButton negrita, cursiva, subraya, color;
     private JComboBox<String> combo, tamano;
@@ -20,15 +21,18 @@ public class EDITOR_TEXTO_JRM extends JFrame {
     private JMenuItem mi1, mi2, mi3;
 
     public EDITOR_TEXTO_JRM() {
+        // Creacion panel
         panel = new JPanel();
         panel.setBackground(Color.lightGray);
         panel.setLayout(null);
 
+        // creacion botones
         negrita = new JButton("Negrita");
         cursiva = new JButton("Cursiva");
         subraya = new JButton("Subrayado");
         color = new JButton("Color");
 
+        // Creacion Combo
         combo = new JComboBox<>();
         combo.addItem("Arial");
         combo.addItem("Verdana");
@@ -44,6 +48,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         tamano.addItem("64");
         tamano.addItem("128");
 
+        // Padding
         negrita.setBounds(30, 20, 80, 30);
         cursiva.setBounds(130, 20, 80, 30);
         subraya.setBounds(230, 20, 120, 30);
@@ -51,7 +56,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         tamano.setBounds(490, 20, 100, 30);
         color.setBounds(610, 20, 100, 30);
 
-
+        // Background
         negrita.setBackground(Color.darkGray);
         cursiva.setBackground(Color.darkGray);
         subraya.setBackground(Color.darkGray);
@@ -59,6 +64,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         tamano.setBackground(Color.darkGray);
         color.setBackground(Color.darkGray);
 
+        // Color de fuente
         negrita.setForeground(Color.white);
         cursiva.setForeground(Color.white);
         subraya.setForeground(Color.white);
@@ -66,6 +72,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         tamano.setForeground(Color.white);
         color.setForeground(Color.white);
 
+        // Borde de los botones
         negrita.setBorder(BorderFactory.createRaisedBevelBorder());
         cursiva.setBorder(BorderFactory.createRaisedBevelBorder());
         subraya.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -73,6 +80,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         tamano.setBorder(BorderFactory.createRaisedBevelBorder());
         color.setBorder(BorderFactory.createRaisedBevelBorder());
 
+        // Añadir al panel
         panel.add(negrita);
         panel.add(cursiva);
         panel.add(subraya);
@@ -80,6 +88,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         panel.add(tamano);
         panel.add(color);
 
+        // Crear panel de texto con scroll
         escribir = new JTextPane();
         JScrollPane scrollPane = new JScrollPane(escribir);
         scrollPane.setBounds(30, 60, 680, 300);
@@ -88,6 +97,8 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         panel.add(scrollPane);
 
         add(panel);
+
+        // Crear Actions Listeners
         negrita.addActionListener(new Bold());
         cursiva.addActionListener(new Cursiva());
         subraya.addActionListener(new Subraya());
@@ -95,6 +106,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         tamano.addActionListener(new Tamano());
         color.addActionListener(new SeColor());
 
+        // crear menu del programa
         menubar = new JMenuBar();
         setJMenuBar(menubar);
 
@@ -124,7 +136,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         menu.add(mi2);
 
     }
-
+    // Action Listener de Negrita
     private class Bold implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             MutableAttributeSet attrs = escribir.getInputAttributes();
@@ -133,7 +145,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
             escribir.setCharacterAttributes(attrs, false);
         }
     }
-
+    // Action Listener de Cursiva
     private class Cursiva implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             MutableAttributeSet attrs = escribir.getInputAttributes();
@@ -142,7 +154,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
             escribir.setCharacterAttributes(attrs, false);
         }
     }
-
+    // Action Listener de subrayar
     private class Subraya implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             MutableAttributeSet attrs = escribir.getInputAttributes();
@@ -151,7 +163,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
             escribir.setCharacterAttributes(attrs, false);
         }
     }
-
+    // Action Listener para el combo de la fuente
     private class CambiarFuente implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String fontName = (String) combo.getSelectedItem();
@@ -162,6 +174,8 @@ public class EDITOR_TEXTO_JRM extends JFrame {
             }
         }
     }
+
+    // Action Listener para el combo de cambiar el tamaño del texto
     private class Tamano implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String fontSize = (String) tamano.getSelectedItem();
@@ -173,6 +187,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         }
     }
 
+    // Para cuando pinche en el boton de color salga un selector de colores
     private class SeColor implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             Color selectedColor = JColorChooser.showDialog(null, "Seleccione un color", Color.BLACK);
@@ -184,6 +199,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         }
     }
 
+    // Action Listener para el menu de arriba que se pueda guardar un archivo en el programa
     private class Guardar implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             JFileChooser file = new JFileChooser();
@@ -203,6 +219,7 @@ public class EDITOR_TEXTO_JRM extends JFrame {
         }
     }
 
+    // Para terminar el programa, esto lo hace posible la funcion dispose()
     private class Salir implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             dispose();
@@ -210,11 +227,17 @@ public class EDITOR_TEXTO_JRM extends JFrame {
     }
 
     public static void main(String[] args) {
+        // Crea el frame
         EDITOR_TEXTO_JRM editor = new EDITOR_TEXTO_JRM();
+        // Titulo del programa
         editor.setTitle("Design Preview [ Editor de Texto ]");
+        // posicion en el que la abre
         editor.setLocation(400, 100);
+        // Anchura y Altura del programa
         editor.setSize(750, 600);
+        // Que sea interactivo
         editor.setVisible(true);
+        // Termina el programa cuando se cierra
         editor.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 }
